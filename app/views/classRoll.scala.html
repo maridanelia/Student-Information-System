@@ -1,0 +1,48 @@
+@* classRoll Template File *@
+@(cl : SchoolClass, students : Seq[User], grades : Map[String, SchoolClass.Grade])(userType : User.UserType)
+@main("Student Information System"){
+	<h2>Class Roll for  @cl.course.departmentID@cl.course.courseNumber @cl.course.courseName </h3>
+	<div name = "classID" classID=@cl.getID class = "hidden"></div>
+	<table border="1" style="width:100%">
+		<tr>
+			<td> <h4>Student </h4></td>
+			<td> <h4>Grade </h4></td>
+			@if(userType == User.UserType.ADMIN){
+					<td>
+						<h4>Action</h4>
+					</td>
+				}
+		</tr>
+	
+		@students.map{s=>
+			<tr>
+				<td> <a href =@routes.StudentController.transcipt(s.email)>@s.firstName @s.lastName (@s.email)</td>
+				
+				<td>
+				@grades.get(s.email)
+				@if(userType == User.UserType.TEACHER){<select name = "grade" student = @s.email @if(grades.get(s.email)!=null){initial = "@grades.get(s.email)" } else {initial = "empty" }class = hidden>
+					<option value = "empty">    </option>
+					@SchoolClass.Grade.values().map{grade=>
+						<option value = @grade @if(grade == grades.get(s.email)){selected = "selected"}> @grade</option>
+					}
+				</select>}
+				</td>
+				
+				@if(userType == User.UserType.ADMIN){
+					<td>
+						<form action = @routes.ClassController.dropStudentAdmin() method = "POST">
+							<input type = "submit" value = "Drop Student From Class"></input>
+							<input name = "email" value = @s.email class = "hidden"></input>
+							<input name="id" value = @cl.getID class ="hidden" ></input>
+						</form>
+					</td>
+				}
+			</tr>
+		}
+	</table>
+	<div class ="error hidden" name = "message"></div>
+	<input type = button name = "grade" value = "Grade">
+	<input type = button name = "done" value = "Done" class = "hidden">
+	
+	<script src="@routes.Assets.versioned("javascripts/grade.js")" type="text/javascript"></script>
+}

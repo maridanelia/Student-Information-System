@@ -1,0 +1,8 @@
+@* Majors Template File *@
+@(majors: Seq[Major])
+@main("Student Information System"){
+	<h2> Available University Majors</h2>
+	@majors.map{maj=>
+		<a href = @("/majors/"+maj.getID)> @maj.name </a>	
+	}
+}

@@ -1,0 +1,25 @@
+@* newCourse Template File *@
+@(courseForm: Form[Course])(depts:Seq[Department])
+@main("Student Information System"){
+	<h2>Add New Course to the System</h2>
+	
+	@helper.form(action = routes.CourseController.addCourse()){
+			
+		@helper.select(courseForm("departmentID"),depts.map(dept=>
+			(dept.departmentID,dept.departmentID)
+			), 
+			
+			'_label -> "Department"
+			
+		)
+		@helper.inputText(courseForm("courseNumber"), '_label -> "Course Number")
+		@helper.inputText(courseForm("courseName"), '_label -> "Course Name")
+		@helper.textarea(courseForm("description"), '_label -> "Course Description")		
+				
+		@helper.input(courseForm("numberOfUnits"),'_label -> "Number of units") { (id, name, value, args) =>
+  			  <input type="number" name="@name" id="@id" label="Number of Units">
+} 
+		
+		<input type ="submit" name = "create" value = "Create Course">
+	}
+}	

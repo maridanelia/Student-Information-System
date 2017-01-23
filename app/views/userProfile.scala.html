@@ -1,0 +1,45 @@
+@* userProfile Template File *@
+@(user: User)(loggedUser :User)
+@main("Student Information System"){
+	<h2>User Profile</h2>
+	<b> Name: </b> @user.firstName  @user.lastName
+	<br>
+	<b> E-mail: </b> @user.email
+	<br>
+	<b> Status: </b> <text style= "text-transform: lowercase"> @user.userType</text>
+	@if(user.isDeactivated){ 
+		<div class = error>This user is currently deactivated from the system. </div>
+		<form action =@routes.userManager.restoreUser() method="POST" class = "inline">
+			<input type = "text" name ="email" value =@user.email class ="hidden"></input>
+			<input type ="submit" value = "Restore"></input>
+		</form>
+	}
+	@if(loggedUser!=null&&(loggedUser.userType == User.UserType.ADMIN ||loggedUser.userType == User.UserType.TEACHER)&& user.userType == User.UserType.STUDENT){
+		<a href = @("/transcript/"+user.email) class = "button"> View Student History </a>
+	}
+	
+	
+	@if(loggedUser!=null&&(loggedUser.userType == User.UserType.ADMIN)){
+	@helper.form(action = routes.userManager.deactivateUser()){
+		<input type ="submit" name = "deactivate" value = "Deactivate User">
+		<input type = "text" class = "hidden" name = "email" value = @user.email>
+	}
+	
+	
+	}
+	@if(user.email == loggedUser.email){
+	<form action = @routes.userManager.changePassword() method = "POST">
+		<h3> Change Password</h3>
+		<input class = "hidden" value =@user.email name="email"></input>
+		<br>
+		Old Password: <input type = "password" name = "old"> </input>
+		<br>
+		New Password: <input type = "password" name = "new"> </input>
+		<br>
+		Confirm New Password: <input type = "password" name = "confirm"> </input>
+		<br>
+		
+		<input type = "submit" value = "Change Password"></input>
+	</form>
+	}
+}	

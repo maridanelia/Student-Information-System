@@ -1,0 +1,15 @@
+@* AssignMajor Template File *@
+@(studentEmail :String)
+@main("Student Information System"){
+	<form action = @routes.StudentController.addStudentToMajor() method = "POST">
+		<input type = "text" label = "Student Email" name = "email" value = @studentEmail> </input>
+		
+		<select name = "major">
+			@Major.getAllMajors().map(maj=>
+					<option value ={""+maj.id}> {maj.name}</option>
+				)
+		</select>
+		
+		<input type = "submit" value ="Assign Major"></input>
+	</form>
+}	

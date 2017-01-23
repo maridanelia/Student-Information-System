@@ -1,0 +1,24 @@
+@* addUser Template File *@
+@(userForm: Form[User])
+@main("Student Information System"){
+	<h2> Create New User</h2>
+	@helper.form(action = routes.userManager.addUser()){
+		@helper.inputText(userForm("email"), '_label -> "E-mail")		
+		
+		@helper.select(userForm("userType"),Seq(
+			"" ->"---",
+			"TEACHER" -> "Teacher",
+			"STUDENT" -> "Student",
+			"ADMIN" -> "Administrative Staff"
+			
+			), 
+			
+			'_label -> "Type of User"
+			
+		)
+		@helper.inputText(userForm("firstName"), '_label -> "First Name")
+		@helper.inputText(userForm("lastName"), '_label -> "Last Name")
+		@helper.inputText(userForm("password"), '_label -> "Password")
+		<input type ="submit" name = "create" value = "Create User">
+	}
+}	

@@ -1,0 +1,13 @@
+@(majorForm: Form[Major])
+@main("Student Information System"){
+	
+	<h2>Create a New Major</h2>
+	@helper.form(action = routes.MajorController.addMajor()){
+		@helper.inputText(majorForm("name"), '_label -> "Major name")	
+		@helper.input(majorForm("unitRequirements"),'_label -> "Number of units required to complete major") { (id, name, value, args) =>
+  			  <input type="number" name="@name" id="@id" label="Number of Units">
+  		}
+		
+		<input type ="submit" name = "create" value = "Create Major">
+	}
+}

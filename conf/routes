@@ -1,0 +1,92 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET /                           controllers.Application.index()
+
+#routes to add test data to the system.
+
+GET /setup			controllers.TestController.setUp()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+POST 	/login						controllers.Application.login()
+GET 	/teacherHome/allClasses		controllers.Application.allClasses()
+GET		/teacherHome/currentClass	controllers.Application.currentClasses()
+
+GET		/logout						controllers.Application.logout()
+GET		/newUser					controllers.userManager.newUser()
+POST	/addUser					controllers.userManager.addUser()
+GET     /allUsers					controllers.userManager.viewAllUsers()
+GET		/allInactiveUsers			controllers.userManager.viewInactiveUsers()
+GET 	/myAccount					controllers.Application.myAccount()
+POST 	/restoreUser				controllers.userManager.restoreUser()
+
+POST /users/delete				controllers.userManager.deactivateUser()
+GET /users/:email				controllers.userManager.displayUser(email: String)
+POST /changePassword			controllers.userManager.changePassword()
+
+GET /createCourse				controllers.CourseController.newCourse()
+POST /addCourse				controllers.CourseController.addCourse()
+POST /deleteCourse			controllers.CourseController.deleteCourse()
+
+POST /addPrereq   			controllers.CourseController.addPrerequisite()
+POST /modifyCourse			controllers.CourseController.modifyCourse()
+POST /removePrereq			controllers.CourseController.removePrerequisite()
+GET /courses				controllers.CourseController.viewAllCourses()
+GET /courses/				controllers.CourseController.viewAllCourses()
+GET /courses/:dept/:number     controllers.CourseController.courseDetail(dept : String, number: Int)
+GET /courses/:dept				controllers.CourseController.viewCoursesByDepartment(dept :String)
+POST /course/byDept				controllers.CourseController.searchCoursesByDepartment()
+
+GET /newSemester			controllers.SemesterManagment.semesterForm()
+POST /addSemester			controllers.SemesterManagment.addSemester()
+GET /allSemesters			controllers.SemesterManagment.allSemesters()
+POST /closeSemester			controllers.SemesterManagment.closeEnrollment()
+POST /openSemester  		controllers.SemesterManagment.openEnrollment()
+
+GET /newClass				controllers.ClassController.newClassAction()
+POST /addClass				controllers.ClassController.addClass()
+POST /deleteClass			controllers.ClassController.deleteClass()
+GET /classes/:id			controllers.ClassController.classDetails(id :Int)
+GET /classes/:id/classRoll  controllers.ClassController.classRoll(id :Int)
+
+GET  /allClasses				controllers.ClassController.allClasses()
+GET /allClasses/:department/:semester  controllers.ClassController.classesInDepartment(semester: Int, department : String)
+POST /classList				controllers.ClassController.classList()
+POST /grade					controllers.ClassController.gradeClass()
+
+POST /enroll  				controllers.ClassController.addStudent()
+POST /drop  				controllers.ClassController.dropStudent()
+POST /dropFromClass			controllers.ClassController.dropStudentAdmin()
+
+
+POST /addtextbook			controllers.ClassController.addTextBook()
+POST /removetextbook		controllers.ClassController.removeTextBook()
+
+POST /addScheduleItem 		controllers.ClassController.addScheduleItem()
+POST /removeScheduleItem	controllers.ClassController.removeScheduleItem()
+
+POST /updateTeacher 		controllers.ClassController.modifyTeacher()
+POST /updateLocation		controllers.ClassController.modifyLocation()
+POST /updateSize			controllers.ClassController.modifySize()
+
+GET	/myClasses				controllers.StudentController.currentClasses()
+GET /myHistory				controllers.StudentController.history()
+GET /transcriptPrint/:student	controllers.StudentController.printableTranscript(student: String)
+GET /transcript/:student	controllers.StudentController.transcipt(student: String)
+
+POST /gradCheck					controllers.StudentController.checkGraduation()
+POST /graduate					controllers.StudentController.graduate()
+
+GET /newMajor				controllers.MajorController.newMajor()
+POST /addMajor				controllers.MajorController.addMajor()
+POST /majors/assign				controllers.StudentController.renderAssignMajor()
+POST /assignMajor				controllers.StudentController.addStudentToMajor()
+GET /majors					controllers.MajorController.AllMajors()
+GET /majors/:id				controllers.MajorController.majorDetails(id:Int)
+POST /majors/addCourse/:id 		controllers.MajorController.addCourseToMajor(id : Int)
+POST /majors/removeCourse/:id	controllers.MajorController.removeCourseFromMajor(id:Int)
+POST /majors/remove/:id			controllers.MajorController.removeMajor(id: Int)
+

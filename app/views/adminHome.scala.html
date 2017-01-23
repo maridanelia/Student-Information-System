@@ -1,0 +1,28 @@
+@* adminHome Template File *@
+@()
+
+@main("Student Information System"){
+	
+	<h2> Welcome to Student Information System!</h2>
+	<div class = "homePageDiv"> <h3>Manage users</h3>
+		<a class ="button" href = "/allUsers"> View and Manage Users</a>
+		<a class ="button"  href = "/newUser"> Add New User</a>
+	</div>
+	
+	<div class = "homePageDiv"> 
+		<h3>Manage Courses and Classes</h3>
+		
+		
+		<a class ="button"  href = "/newSemester"> Create Semester </a>
+		<a class ="button"  href = "/allSemesters"> View Semesters and Semester Details</a>
+		<br>
+		<a class ="button"  href = "/createCourse"> Create New Course</a>
+		<a class ="button"  href = "/courses"> View and Manage Existing Courses</a>
+		<br>
+		<a class ="button"  href = "/allClasses"> Manage Classes </a>
+		<a class ="button"  href = "/newClass"> Create a Class</a>
+		<br>
+		<a class ="button"  href = "/newMajor"> Create a Major</a>
+		<a class = "button" href ="/majors">View Available Majors</a>
+	</div>
+}	

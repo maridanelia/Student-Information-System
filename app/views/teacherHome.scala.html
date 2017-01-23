@@ -1,0 +1,30 @@
+@* teacherHome Template File *@
+@(classes: Seq[SchoolClass])(allClassDisplay : Boolean)
+@main("Student Information System") {
+	
+	<h2> Welcome to Student Information System!</h2>
+	@if(allClassDisplay){
+		<h3> All Your Classes:</h3>	
+		<h4><a href = "/teacherHome/currentClass"> View classes for current semester only</a></h4>
+	}	else {
+		<h3> Your Classes in this Semester:</h3>
+		<h4> <a href = "/teacherHome/allClasses"> View all classes</a></h4>
+	}
+	<br>
+	<br>
+	
+	@classes.map{cl=>
+		@if(allClassDisplay||cl.semester.getStatus ==Semester.SemesterStatus.InProgresss){
+			<div name = "classDisplay">				
+				<a class = "button" href =@routes.ClassController.classDetails(cl.getID)>
+				@cl.semester.year @cl.semester.term
+				@cl.course.departmentID @cl.course.courseNumber @cl.course.courseName 
+				
+				<a>
+			</div>
+		}
+		
+	}
+	
+	
+}

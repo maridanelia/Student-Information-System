@@ -1,0 +1,21 @@
+@* addUser Template File *@
+@(classes : Seq[SchoolClass])
+@main("Student Information System"){
+	<h2> Your Current Classes</h2>
+	@classes.map{cl=>
+		<div name = "classDisplay">
+				<span>@cl.course.departmentID@cl.course.courseNumber</span>
+				<span>@cl.course.courseName</span>
+				@helper.form(action=routes.ClassController.classDetails(cl.getID), 'class -> "inline"){
+					<span><input type="submit" value ="See Class" class = "inline"></input></span>
+				}
+				@if(cl.schedule != null&&cl.schedule.size() > 0){
+					<ul style="margin:0;padding:0;">
+						@cl.schedule.map{c=>
+							<li class="horizontal"> @c.day  @c.startTime - @c.endTime</li>
+					}
+					</ul>
+				}	
+		</div>
+	}
+}

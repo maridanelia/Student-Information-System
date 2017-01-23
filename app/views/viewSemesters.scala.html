@@ -1,0 +1,35 @@
+@* viewSemesters Template File *@
+@(semesters:Seq[Semester])
+@main("Student Information System"){
+	
+	<table border="1" style="width:100%">
+		<tr>
+				<td><h3>Semester</h3></td>
+				<td><h3> Start Date</h3></td>
+				<td><h3> End Date</h3></td>
+				<td><h3> Open For Enrollment</h3></td>
+				
+		</tr>
+		@semesters.map{semester=>
+			
+			<tr>				
+				<td>@semester.term @semester.year</td>
+				<td>@semester.startDate.format("MM/dd/yyyy")</td>
+				<td>@semester.endDate.format("MM/dd/yyyy")</td>
+				<td> @if(semester.availableForEnrolment){Open
+				<form action = @routes.SemesterManagment.closeEnrollment() method = "POST" class = "inline">
+					<input type = "text" name="id" value = @semester.getID class = hidden></input>
+					<input type = "submit" value = "Change Status"></input>
+				</form>
+				}else {Closed
+				<form action = @routes.SemesterManagment.openEnrollment() method = "POST" class = "inline">
+					<input type = "text" name="id" value = @semester.getID class = hidden></input>
+					<input type = "submit" value = "Change Status"></input>
+				</form>
+				
+				}</td>
+			</tr>
+		}
+	</table>
+	
+}	

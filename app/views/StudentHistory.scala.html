@@ -1,0 +1,31 @@
+@* addUser Template File *@
+@(profile : StudentProfile, message :String)(user : User)
+@main("Student Information System"){
+	@StudentHistory_Plain(profile,message)
+	
+	@if(user.userType == User.UserType.ADMIN){
+		
+		<form action =@routes.StudentController.checkGraduation() method ="POST" name = "gradCheckForm" email = @profile.getEmail>
+			<div name = "info"> </div>
+			<div name = message></div>
+			<input type = "submit"  value = "Perform Graduation Check"></input>
+			<input type = "text" class ="hidden" name ="email" value = @profile.getEmail>
+		</form>
+		<form action = @routes.StudentController.renderAssignMajor() method = "POST" class ="inline">
+			<input type = "submit"  value = "Assign Major"></input>
+			<input type = "text" class ="hidden" name ="email" value = @profile.getEmail>
+		</form>
+		<form action = @routes.StudentController.graduate() method ="POST" class = "inline"> 
+			<input type = "submit" value = "Graduate"></input>
+			<input type ="text" value =@profile.getEmail name ="email" class = "hidden"></input>
+		</form>
+		
+		<form action = @routes.StudentController.printableTranscript(profile.getEmail) method ="GET" class = "inline"> 
+			<input type = "submit" value = "Print"></input>
+			<input type ="text" value =@profile.getEmail name ="email" class = "hidden"></input>
+		</form>
+		@if(user.userType == User.UserType.ADMIN){
+		<script src="@routes.Assets.versioned("javascripts/gradCheck.js")" type="text/javascript"></script>
+		}
+	}
+}

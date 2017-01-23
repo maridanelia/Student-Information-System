@@ -1,0 +1,17 @@
+@* login Template File *@
+@(login1Form: Form[LoginModel])
+
+@main("Student Information System") {
+		<style> 
+			dd.error{
+		     	color : red
+			}
+			
+		</style>
+		@helper.form(action = routes.Application.login()){
+			@helper.inputText(login1Form("email"),'_label -> "Email")
+			@helper.inputPassword(login1Form("password"), '_label -> "Password")
+			
+			<input type = "submit" name = "login" value = "log in">
+		}
+}

@@ -1,0 +1,189 @@
+@* classDetails Template File *@
+@(cl: SchoolClass)(userType : User.UserType)
+@main("Student Information System"){
+	
+	<input type="number" name="classID" value=@cl.getID() class="hidden" readonly>
+	<div>
+		<h2>@cl.course.departmentID@cl.course.courseNumber - @cl.course.courseName</h2>
+	</div>
+	
+	<div>
+	<h3> Course description </h3>
+	
+		@if(cl.course.description == null){
+			
+		}	else {@cl.course.description}
+	
+	</div>
+	<hr>
+	<div>
+		<b> Number of units: @cl.course.numberOfUnits</b>
+	</div>
+	<hr>
+	<div name = "prerequisites">
+		Prerequisites:
+		@if(cl.course.prerequisites.size() == 0){
+			None
+		}	else {
+			<p>
+			<ul>
+			@cl.course.prerequisites.map{c=>
+				<li> @c.departmentID@c.courseNumber
+				</li>
+			}
+			</ul>
+		}
+		
+		
+	</div>
+	
+	<hr>
+	<div name = "classDetails">
+		<div> Semester: @cl.semester.toString </div>
+		<div> Enrollment status:  @if(cl.semester.availableForEnrolment){Open}	else {Closed}</div>
+		<div name ="teacher"> Teacher: @if(cl.teacher==null){
+			No teacher assigned
+		}	else {
+			@cl.teacher.firstName @cl.teacher.lastName 
+		}
+		<form name=teacherForm class="hidden inline" action = @routes.ClassController.modifyTeacher() method = "POST">
+				<input type = "text" name = "email"> </input>
+				<input type = "submit"></input> 
+				<input type = "number" class="hidden" name = "id" value = @cl.getID></input>
+			</form>
+		</div>
+		<div name = "location" > 	
+			Location: @cl.location
+			<form name=locationForm class="hidden inline" action = @routes.ClassController.modifyLocation() method = "POST">
+				<input type = "text" name ="location"> </input>
+				<input type = "submit"></input> 
+				<input type = "number" class="hidden" name = "id" value = @cl.getID></input>
+			</form>
+		</div>
+		 
+		 
+		<div name ="size">
+			Class Size: @cl.getSize()
+			<form name=sizeForm class="hidden inline" action = @routes.ClassController.modifySize() method = "POST">
+				<input type = "number" name = size> </input>
+				<input type = "submit" ></input> 
+				<input type = "number" class="hidden" name = "id" value = @cl.getID></input>
+			</form>
+			<br>
+			Space left in class: @cl.spaceLeft
+			<br>
+		
+		</div>
+		@if(userType == User.UserType.ADMIN){
+			<input type = "button" name="modDetails" value = "Modify Details">
+			<input type = "button" name="detailsDone" value = "Done" class ="hidden">
+		}
+	</div>
+	<hr>
+	
+	<div name = "textbooks">
+		Textbooks:
+		@if(cl.textbooks == null||cl.textbooks.size() == 0){
+			None
+			<ul></ul>
+		}	else {
+			<p>
+			<ul>
+				@cl.textbooks.map{c=>
+					<li> @c 
+					<input type="button" value="remove" id="@c" class="hidden">
+					</li>
+				}
+			</ul>
+		}
+		@if(userType == User.UserType.ADMIN){
+			<form name="add" class="hidden" class ="hidden">
+				<input type="text" name="textbookName">
+				<input type="submit" value="Add Textbook">
+			</form>
+			<input type="button" name="modify" value="Modify Textbook List">
+			<input type="button" name="done" value="Done" class ="hidden">
+		}
+		
+	</div>
+	<hr>
+	
+	
+	
+	
+	
+	
+	<div name="schedule">
+		Times of Class:
+		@if(cl.schedule == null||cl.schedule.size() == 0){
+			<ul>
+			</ul>
+		}	else {			
+			<p>
+			<ul>
+				@cl.schedule.map{c=>
+					<li> @c.day  @c.startTime - @c.endTime
+					<input type="button" value="remove" id="@c.getID()" class="hidden">
+					</li>
+				}
+			</ul>
+		}
+		
+		@if(userType == User.UserType.ADMIN){
+			<form name = "addItem" class = "hidden">
+			<select name = "weekday">
+				@SchoolClass.Weekday.values().map{day=>
+					<option>@day</option>
+				};
+				
+			</select>
+		
+			<input type="time" name="startTime">			
+			<input type="time" name="endTime">
+			<input type="button" name = "add" value = "add">
+			
+			</form>
+		
+			<input type="button" name ="modify" value = "Modify Schedule">
+			<input type="button" name="done" value="done" class="hidden">
+		}
+		
+	</div>
+	<hr>
+	
+	@* Student Interface *@
+	@if(userType == User.UserType.STUDENT){
+			@helper.form(action = routes.ClassController.addStudent()){
+				<input type="number" name="id" value=@cl.getID() class="hidden" readonly>
+				<br>
+				<input type = "submit" value = "enroll">			
+			}
+			
+			@helper.form(action = routes.ClassController.dropStudent()){
+				<input type="number" name="id" value=@cl.getID() class="hidden" readonly>
+				<br>
+				<input type = "submit" value = "drop">			
+			}
+		
+	}
+	
+	@if(userType == User.UserType.ADMIN ||userType == User.UserType.TEACHER){
+			@helper.form(action = routes.ClassController.classRoll(cl.getID())){
+				
+				<br>
+				<input type = "submit" value = "See Class Roll">			
+			}		
+		
+	}
+	@if(userType == User.UserType.ADMIN){
+			@helper.form(action = routes.ClassController.deleteClass()){
+				<br>
+				<input type = "submit" value = "Delete this class">		
+				<input type="number" name="id" value=@cl.getID() class="hidden" readonly>	
+			}		
+		
+	}
+	<script src="@routes.Assets.versioned("javascripts/modifyScheduleAndOther.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/modifyTextbooks.js")" type="text/javascript"></script>
+	
+}

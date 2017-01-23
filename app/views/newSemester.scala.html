@@ -1,0 +1,28 @@
+@* newSemester Template File *@
+@(semesterForm: Form[Semester])
+@main("Student Information System"){
+	@helper.form(action = routes.SemesterManagment.addSemester()){
+		<h2> Add New Semester to the System</h2>
+		@helper.input(semesterForm("year"),'_label -> "Semester Year") { (id, name, value, args) =>
+  			  <input type="number" name="@name" id="@id" value = "2016">
+  		}
+  		@helper.select(semesterForm("term"),Seq(
+			"Spring" -> "Spring",
+			"Summer" -> "Summer",
+			"Autumn" -> "Autumn",
+			"Winter" -> "Winter"
+			), 
+			'_label -> "Term"
+		)
+		@helper.select(semesterForm("availableForEnrolment"), Seq(
+			"true" -> "Available",
+			"false" -> "Not Available"
+		), 
+			
+		'_label -> "Available for Enrolment")
+		
+		@helper.inputDate(semesterForm("startDate"),  '_label -> "Start of Semester",'_help -> "format dd/MM/yyyy")
+		@helper.inputDate(semesterForm("endDate"), '_label -> "End of Semester",'_help -> "format dd/MM/yyyy")
+		<input type = "submit" value = "Add New Semester">
+	}	
+}

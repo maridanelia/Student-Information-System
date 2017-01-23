@@ -1,0 +1,57 @@
+@* Classes Template File *@
+@(semesters: Seq[Semester], depts : Seq[Department])(classes :Seq[SchoolClass], semester : Semester, dept: String)
+@main("Student Information System"){
+
+	@if(classes==null){
+		@helper.form(action = routes.ClassController.classList()){
+			Please select department and semester to view list of available classes.
+			<div>
+				Department
+				<select name = "department">
+					@depts.map(dept=>
+						<option value ={dept.departmentID}> {dept.departmentID +" - "+dept.departmentName}</option>
+					)
+				</select>
+			</div>
+			
+			<div>
+				Semester
+				<select name ="semester">
+					@semesters.map(sem=>
+						<option value={sem.getID().toString()}>{sem.term.toString()}{sem.year}</option>
+					)
+				</select>			
+			</div>
+			
+			<input type = "submit" value = "search">
+		}
+		
+		
+	}	else {
+	<h2> Classes for @semester.term @semester.year</h2>
+		<table border="1" style="width:100%">
+		<tr>
+				<td><h4>Class ID</h4></td>
+				<td><h4>Course ID</h4></td>
+				<td><h4>Course Name</h4></td>
+				<td><h4>Units</h4></td>
+				<td><h4>Details</h4></td>
+				
+		</tr>
+		@classes.map{cl=>
+			
+			<tr>
+				<td>@cl.getIDString()</td>
+				<td>@cl.course.departmentID@cl.course.courseNumber</td>
+				<td>@cl.course.courseName</td>
+				<td>@cl.course.numberOfUnits</td>
+				
+				<td>@helper.form(action=routes.ClassController.classDetails(cl.getID)){
+					<input type="submit" value ="Details">
+				}</td>
+			</tr>
+		}
+	</table>
+	}
+	
+}

@@ -1,0 +1,35 @@
+@* StudentHistory_Plain Template File *@
+@(profile : StudentProfile, message :String)
+<h2> @message</h2>
+	<div name="studSummary">
+		<div> Name: @profile.getFirstName() @profile.getLastName()</div>
+		<div>Total Units Enrolled: @profile.getUnitsTaken</div>
+		<div>Units Completed: @profile.getUnitsCompleted</div>
+		<div> Major: @if(profile.getMajor == null) {NA} else {@profile.getMajor.name}</div>
+		<div>GPA: @if(profile.getGPA == -1){ NA } else{ @profile.getGPA } </div>
+		<div>Status: @profile.getStudentYear</div>
+	</div>
+	
+	<table>
+		<tr><h2> Courses Taken </h2></tr>
+		<tr>
+			<td><h3> Semester</h3></td>
+			<td><h3>Course ID</h3></td>
+			<td><h3>Course Name</h3></td>
+			<td><h3>Units</h3></td>
+			<td><h3>Grade</h3></td>
+		</tr>
+		@profile.getAllClasses().map{cl=>			
+			<tr>
+				<td>@cl.semester.year @cl.semester.term </td>
+				<td>@cl.course.departmentID@cl.course.courseNumber</td>
+				<td>@cl.course.courseName</td>
+				<td>@cl.course.numberOfUnits</td>
+				<td>@if(profile.getGrade(cl)==null){
+					NA
+				} else {
+					@profile.getGrade(cl)
+				}</td>
+			</tr>
+		}
+	</table>
